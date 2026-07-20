@@ -1,0 +1,27 @@
+{
+  "_what": "A Markovian log checkpoint, Bitcoin-anchored over (root + wallet), AND signed by that wallet's key over the same commitment.",
+  "layering": "commitment and Bitcoin anchor are identical to rootcommit/v1; v2-sig adds W's signature over that commitment.",
+  "checkpoint": {
+    "origin": "markovianprotocol.com/log",
+    "tree_size": 1387,
+    "root_line_verbatim": "GmLAFnmcIf8WgSfpWt7xBleQE+zgSZx8x9zuSOYw+vA="
+  },
+  "commitment_sha256": "4d1cc236c3872701bb27f9e27fad315e153eeb43a767a2cae958a3bb4014e771",
+  "wallet": "0xdaE76a3C848CafD453dB5EBF8cEb0DbBA7610273",
+  "signature": {
+    "scheme": "EIP-191 personal_sign (secp256k1), recover -> address",
+    "message": "markovianprotocol.com/bitcoin-anchor/rootcommit/v2-sig\n4d1cc236c3872701bb27f9e27fad315e153eeb43a767a2cae958a3bb4014e771",
+    "sig_b64": "8mgzjDUP9kFCEyqcj/2RFyFsBReZjsftGdfrXTd8aeYHRcvdwsGfVdQYG57jH7vPTzsgiQ03GVtf2g8Pv4LLrxs=",
+    "recovers_to": "0xdaE76a3C848CafD453dB5EBF8cEb0DbBA7610273"
+  },
+  "anchor": {
+    "type": "opentimestamps",
+    "identifier": "markovianprotocol.com/bitcoin-anchor/rootcommit/v2-sig",
+    "opaque_layout": "version(1)=0x02 || wlen(1) || wallet_ascii || 0x41 || sig(65) || ots_bytes",
+    "anchor_line": "\u2014 markovianprotocol.com/bitcoin-anchor 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",
+    "status": "bitcoin-confirmed",
+    "anchoredAt": "2026-07-20T02:56:59.898955Z"
+  },
+  "proves": "who (W's signature) + what (root) + when (Bitcoin). The record was never rewritten.",
+  "does_not_prove": "that the root is a correct tree head of anything real, or that any figure behind it is true. Provenance and attestation, not audit."
+}

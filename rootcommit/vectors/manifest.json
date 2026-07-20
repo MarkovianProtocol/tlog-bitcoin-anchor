@@ -1,0 +1,47 @@
+{
+  "format": "tlog-bitcoin-anchor rootcommit/v1 conformance vectors",
+  "identifier": "markovianprotocol.com/bitcoin-anchor/rootcommit/v1",
+  "committed_preimage_sha256": "4d1cc236c3872701bb27f9e27fad315e153eeb43a767a2cae958a3bb4014e771",
+  "wallet": "0xdaE76a3C848CafD453dB5EBF8cEb0DbBA7610273",
+  "preimage_layout": "5 LF-terminated ASCII lines: tag, origin=, size=, root= (verbatim base64), wallet= (EIP-55)",
+  "opaque_layout": "version(1)=0x01 || wlen(1) || wallet_ascii || ots_proof_bytes",
+  "scope": "Binds wallet address bytes to the root under Bitcoin time; provenance chosen by the anchorer, not a signature by the wallet's key.",
+  "vectors": [
+    {
+      "file": "rootcommit-01-valid.txt",
+      "desc": "real anchor; preimage commits (root, wallet)",
+      "expect": {
+        "known_anchors": 1,
+        "binding": true,
+        "reject": false
+      }
+    },
+    {
+      "file": "rootcommit-02-tampered-root.txt",
+      "desc": "root line altered; preimage no longer matches proof",
+      "expect": {
+        "known_anchors": 1,
+        "binding": false,
+        "reject": true
+      }
+    },
+    {
+      "file": "rootcommit-03-tampered-wallet.txt",
+      "desc": "wallet altered in opaque; preimage no longer matches proof",
+      "expect": {
+        "known_anchors": 1,
+        "binding": false,
+        "reject": true
+      }
+    },
+    {
+      "file": "rootcommit-04-tampered-proof.txt",
+      "desc": "OTS proof corrupted",
+      "expect": {
+        "known_anchors": 1,
+        "binding": false,
+        "reject": true
+      }
+    }
+  ]
+}
