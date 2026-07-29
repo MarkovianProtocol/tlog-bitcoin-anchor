@@ -18,8 +18,13 @@ from the file and so always agrees with a consistently-emitted file. The hash ch
 tampering AFTER emission; it cannot catch a preimage that was spec-violating at emission. Signer
 recovery in the source repo is what catches that.
 
-It also does not verify the signature in manifest.json — it only checks that one is present and
-well-formed. Recovering it to `signer` needs secp256k1, which is likewise not stdlib.
+It also does not verify the signature in manifest.json — it checks that one is present and
+structurally sound: 65 bytes, recovery id 27 or 28, and r/s inside the secp256k1 group order with s
+in the lower half (EIP-2). Those are integer comparisons, so they need no curve library, and they
+reject the overwhelming majority of hex that is merely the right LENGTH. What they cannot do is tie
+the signature to the digest — recovering it to `signer` needs secp256k1, which is not stdlib. Treat
+a green signature line as "this is shaped like a real Ethereum signature", never as "this signature
+is valid for this receipt".
 
 What it deliberately does NOT do: recover the EIP-712 signer. That needs secp256k1, and the
 point of this directory is that the anchoring side can check the binding with the standard
@@ -48,6 +53,42 @@ TAG = "payperbyte.io/x402-anchor/receipt/v2-sig"
 _TIER = re.compile(r"^tier=(delivery|provenance)$")
 _DIGEST = re.compile(r"^digest=0x[0-9a-f]{64}$")
 _SIGNER = re.compile(r"^signer=0x[0-9a-fA-F]{40}$")
+
+# Order of the secp256k1 group. Used only for integer range checks on (r, s) — no curve arithmetic,
+# so this stays standard-library-only.
+_SECP256K1_N = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141
+
+
+def check_signature(tier: str, sig: object) -> list[str]:
+    """Structural checks on the accompanying signature. Cheap, stdlib-only, and fail-closed.
+
+    A length-only check accepts any 130 hex characters, which means a corrupted or placeholder
+    signature rides along looking fine. Splitting it into (r, s, v) and range-checking costs
+    nothing and rejects almost all of that: r and s must be non-zero and below the group order,
+    s must be in the lower half (EIP-2 — Ethereum rejects malleable high-s signatures outright),
+    and v must be 27 or 28.
+
+    This still does NOT prove the signature belongs to this digest or this signer. That is
+    recovery, it needs secp256k1, and it lives in the source repo.
+    """
+    if not isinstance(sig, str) or not re.fullmatch(r"0x[0-9a-fA-F]{130}", sig):
+        return [f"{tier}: manifest signature missing or not 0x + 130 hex (present: {sig!r})"]
+
+    body = sig[2:]
+    r = int(body[0:64], 16)
+    s = int(body[64:128], 16)
+    v = int(body[128:130], 16)
+
+    errs = []
+    if not 0 < r < _SECP256K1_N:
+        errs.append(f"{tier}: signature r is not in [1, n-1] — not a secp256k1 signature")
+    if not 0 < s < _SECP256K1_N:
+        errs.append(f"{tier}: signature s is not in [1, n-1] — not a secp256k1 signature")
+    elif s > _SECP256K1_N // 2:
+        errs.append(f"{tier}: signature has high s — EIP-2 requires the lower half (malleable)")
+    if v not in (27, 28):
+        errs.append(f"{tier}: signature recovery id is {v}, expected 27 or 28")
+    return errs
 
 
 def check(tier: str, spec: dict) -> list[str]:
@@ -88,9 +129,7 @@ def check(tier: str, spec: dict) -> list[str]:
 
     # The signature is not in the preimage, but the manifest must still carry a well-formed one —
     # it is the "who" layer, and shipping a tier without it would be a silently incomplete record.
-    sig = spec.get("signature")
-    if not isinstance(sig, str) or not re.fullmatch(r"0x[0-9a-fA-F]{130}", sig):
-        errs.append(f"{tier}: manifest signature missing or not 0x + 130 hex (present: {sig!r})")
+    errs += check_signature(tier, spec.get("signature"))
 
     got = "0x" + hashlib.sha256(raw).hexdigest()
     if got != spec["commitment"]:

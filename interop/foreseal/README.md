@@ -95,11 +95,15 @@ python3 verify_preimage.py     # stdlib only — no network, no node, no calenda
 That asserts the files parse as `payperbyte.io/x402-anchor/receipt/v2-sig`, that SHA-256 over the
 exact file bytes equals the committed value, and that the tier, digest and signer lines are well
 formed and agree with `manifest.json`. There is no signature line in the preimage — that is the
-point of the format — so the manifest's signature is checked only for presence and shape.
+point of the format — so the manifest's signature is checked structurally instead: 65 bytes,
+recovery id 27 or 28, `r` and `s` non-zero and inside the secp256k1 group order, `s` in the lower
+half per EIP-2, and distinct across the two tiers. Those are integer comparisons, so they hold
+without a curve library, and they reject hex that is merely the right length.
 
 Two limits worth stating rather than discovering. It does not validate the signer's EIP-55
 checksum, and it does not recover the signature to `signer`: both need keccak256 / secp256k1, which
-are not in the standard library. A preimage emitted with a non-checksummed signer would pass here,
+are not in the standard library. So a green signature line means "shaped like a real Ethereum
+signature", never "valid for this receipt". A preimage emitted with a non-checksummed signer would pass here,
 because the commitment is computed from the file and therefore always agrees with a consistently
 emitted file — the hash check catches tampering after emission, not a preimage that was
 spec-violating when written. Recovery in the source repo is what catches that.
