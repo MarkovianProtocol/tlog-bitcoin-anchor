@@ -1,0 +1,54 @@
+{
+  "log": "https://log.markovianprotocol.com",
+  "leaf_index": 7235,
+  "tree_size_after_append": 7236,
+  "claim_root_sha256": "8ac60d1db58e73e1aa19c45e54e46653fd7fea57a968377c2dd681f9039a6d28",
+  "scope_sha256": "65c9c2a6d577b1916488272c1c9e6fe3d8570c083afa1ffb97e09180c625a937",
+  "leaf_bytes": 1114,
+  "claim_core": {
+    "claim": {
+      "draft": "draft-hawkins-scitt-attested-agent-payment-00",
+      "note": "Conformance example for Implementation Status. Carries no payment authority; apk is a throwaway key's RFC 9679 thumbprint; encoding is RFC 8785 JSON, a declared deviation from the draft's CBOR map.",
+      "profile": "json-rfc8785",
+      "scope": {
+        "apk": {
+          "alg": "sha-256",
+          "thumbprint": "64d4b1de73b0d71d22a2a27b5cc4355b9dc8fb926b8028feb67164937060305c"
+        },
+        "code": {
+          "name": "example-agent-software",
+          "sha256": "39df1f0026a4685730f0ea628555b69755b1c5051ec664858ca1e137cafc1263"
+        },
+        "expiry": "2026-09-30T00:00:00Z",
+        "limits": {
+          "aggregate_interval": "P30D",
+          "max_aggregate": {
+            "asset": "iso4217:EUR",
+            "decimals": 2,
+            "value": "250000"
+          },
+          "max_per_payment": {
+            "asset": "iso4217:EUR",
+            "decimals": 2,
+            "value": "50000"
+          }
+        },
+        "payees": [
+          "org:example-merchant"
+        ],
+        "rails": [
+          "sepa-inst"
+        ]
+      }
+    },
+    "claimType": "https://markovianprotocol.com/claim/payment-scope-example/v1",
+    "issuedAt": "2026-08-08T03:31:01Z",
+    "issuer": "did:pkh:eip155:1:0x59195c2436d1c59f19b5aa5c8b7b2f0000000000",
+    "subject": {
+      "digest": {
+        "sha256": "65c9c2a6d577b1916488272c1c9e6fe3d8570c083afa1ffb97e09180c625a937"
+      },
+      "name": "authorization-scope-example"
+    }
+  }
+}
