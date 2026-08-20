@@ -1,0 +1,79 @@
+{
+  "format": "payperbyte.io/x402-anchor/receipt/v2-sig",
+  "format_note": "Same format as ../manifest.json (see ../README.md and rootcommit/SPEC_SIG.md). These two preimages differ from the parent directory's in one way that matters: they are ANCHORED. Their SHA-256 commitments are leaves 7511 and 7512 of markovianprotocol.com/log, covered by a witnessed checkpoint whose exact bytes carry an OpenTimestamps proof upgraded to Bitcoin block headers.",
+  "source_receipt": {
+    "feed": "sanctions-screen (self-screen of the operator's own custody Safe; no third-party subject data)",
+    "settlement_tx": "0x0cd831756fda358f57051ee3161bb61fb0eba915ada68c43e3ed5e8d9efd3515",
+    "settlement_network": "eip155:8453",
+    "minted": "2026-08-20T03:16Z (UTC)",
+    "deadline": 2102555764,
+    "deadline_iso": "2036-08-17T03:16:04Z",
+    "deadline_note": "~10 years on BOTH tiers - an archival-mode receipt, not the short-deadline test shape in the parent directory. The deadline is the only signed time-adjacent field in the struct; it is an expiry, not an observation time. Existence-before-T comes from the anchor below, not from anything inside the signature.",
+    "attestation_domain": {
+      "name": "BYTE Library",
+      "version": "1",
+      "chainId": 421614,
+      "verifyingContract": "0x44729bB148F46d8Db509E47b0453edc271e06e95"
+    },
+    "attestation_domain_note": "eip155:421614 is Arbitrum Sepolia - a frozen, pre-audit EIP-712 SIGNING namespace, deliberately not a settlement rail. Settlement in the same receipt is Base mainnet (eip155:8453). Same split as the parent manifest, disclosed for the same reason."
+  },
+  "tiers": {
+    "delivery": {
+      "preimage_file": "delivery.preimage.bin",
+      "preimage_bytes": 179,
+      "eip712_digest": "0x70989626820944102f7c41bf897dff0ffcfcc394b82bef177b635e587ef84531",
+      "signer": "0xB48CCc9e3ab67041e3b5D09700138E45cda6AeA8",
+      "signer_note": "Current gateway attester, post the 2026-08-19 planned rotation; the previous attester is published machine-readably at x402.payperbyte.io/.well-known/agent.json -> receipt.retiredAttesters. The parent directory's delivery preimage predates the rotation and recovers to the retired key - both are genuine, on opposite sides of a disclosed boundary.",
+      "signature": "0x0e58202b93e7845a7e1ac54f520f22118070d4926ee5bf888eea0b1f36d72dfb7a129a99d06a32d0568793ed246f52b6bd6287a4e656be2ac7a74f34f17a6a5c1c",
+      "signature_note": "EIP-712 PayloadAttestation signature, recoverable to `signer`. Carried alongside, NOT hashed into the commitment.",
+      "commitment": "0x5db6a1118b1b544fa3dfd879dcc46e0677cf5e8db01508f13e166d715082bf7f",
+      "commitment_alg": "sha256-over-preimage-file-bytes"
+    },
+    "provenance": {
+      "preimage_file": "provenance.preimage.bin",
+      "preimage_bytes": 181,
+      "eip712_digest": "0x248e3fa74634a3d9e6aa08404946c007c36cb1953338b440be1c0b729bff20d8",
+      "signer": "0x344ECaCDe6566294c31397445c98b62a3EEEA456",
+      "signer_note": "sanctions-screen oracle signer, pinned in the live manifest at x402.payperbyte.io/.well-known/x402.json -> receipt.embedded.signers.",
+      "signature": "0xca27fcea6e2be86efd65d77fd0485dc5c1c094f0195b22d52ff30be092e9416f0a3e8520480f0df67d86f10edd86ec80e1f5745dabca467868e18460f1ed25fd1c",
+      "signature_note": "EIP-712 PayloadAttestation signature, recoverable to `signer`. Carried alongside, NOT hashed into the commitment.",
+      "commitment": "0xee45652660d6aff44fc172660de9f9713ba0fd66a91d94d0ea42eac11522152b",
+      "commitment_alg": "sha256-over-preimage-file-bytes"
+    }
+  },
+  "anchoring": {
+    "log_origin": "markovianprotocol.com/log",
+    "leaves": {
+      "delivery": {
+        "index": 7511,
+        "leaf_url": "https://log.markovianprotocol.com/leaf/7511",
+        "leaf_statement": "public-note:v1 sha256:5db6a1118b1b544fa3dfd879dcc46e0677cf5e8db01508f13e166d715082bf7f 2026-08-20T03:18:54Z"
+      },
+      "provenance": {
+        "index": 7512,
+        "leaf_url": "https://log.markovianprotocol.com/leaf/7512",
+        "leaf_statement": "public-note:v1 sha256:ee45652660d6aff44fc172660de9f9713ba0fd66a91d94d0ea42eac11522152b 2026-08-20T03:18:59Z"
+      }
+    },
+    "checkpoint": {
+      "tree_size": 7513,
+      "root_b64": "F5NgEmOAwdP1geJKwxHz49nobySSXBJQCfy1Cuf6UhU=",
+      "stamped_file_url": "https://log.markovianprotocol.com/anchor/7513.checkpoint",
+      "stamped_file_sha256": "14349315f4955953320630ecdc1c5ef20429d8a154cb492b50827ef667abc065",
+      "ots_url": "https://log.markovianprotocol.com/anchor/7513.ots",
+      "naming_note": "Anchor filenames are checkpoint TREE SIZES, not leaf indices. A checkpoint at size 7513 covers every leaf below it, including 7511 and 7512."
+    },
+    "bitcoin_blocks": [963257, 963258, 963260],
+    "existence_before": "2026-08-20T04:51:53Z (timestamp of block 963257, the earliest attesting block)",
+    "verified_2026_08_20": [
+      "inclusion: both leaves' c2sp.org/tlog-proof paths recompute to the checkpoint root at size 7513 (RFC 6962 leaf hash over exact leaf bytes)",
+      "checkpoint origin note signature: Ed25519, verified against the log's published vkey (key id match)",
+      "stamped bytes: SHA-256 of /anchor/7513.checkpoint equals the file hash committed in /anchor/7513.ots",
+      "bitcoin: all three BitcoinBlockHeaderAttestation digests in the .ots equal the merkle roots of blocks 963257/963258/963260 per two independent explorers (mempool.space and blockstream.info) - the log's own stated fallback rule when no local node is available"
+    ],
+    "not_verified_here": [
+      "witness cosignatures on the checkpoint (lines present; not checked by this contribution)",
+      "bitcoin headers against a locally validated chain (explorer cross-check only)"
+    ]
+  }
+}
