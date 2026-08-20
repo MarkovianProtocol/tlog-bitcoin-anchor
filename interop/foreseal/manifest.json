@@ -1,0 +1,40 @@
+{
+  "format": "payperbyte.io/x402-anchor/receipt/v2-sig",
+  "format_note": "Mirrors rootcommit/v2-sig (see rootcommit/SPEC_SIG.md in this repository): the preimage commits the SIGNER, the signature is carried alongside rather than hashed in. The tag is ours, on a domain we control, per the domain/purpose/object/version convention in rootcommit/SPEC.md.",
+  "source_receipt": {
+    "repo": "https://github.com/0rkz/foreseal-x402-conformance",
+    "capture": "fixtures/live-receipt.json",
+    "capture_sha256": "sha256:4d25838c420ad2be5d1fb7a06bb834e283f56d9f269c042b5e32e6b81670a58e",
+    "settlement_tx": "0x60ebf28b80d5a3b67ae947e5d0eeb65746e3ebf84e24ba845cfbb756c84ddac3",
+    "settlement_network": "eip155:8453",
+    "attestation_domain": {
+      "name": "BYTE Library",
+      "version": "1",
+      "chainId": 421614,
+      "verifyingContract": "0x44729bB148F46d8Db509E47b0453edc271e06e95"
+    },
+    "attestation_domain_note": "eip155:421614 is Arbitrum Sepolia \u2014 a frozen, pre-audit EIP-712 SIGNING namespace, deliberately not a settlement rail. The USDC settlement in this same receipt is Base mainnet (eip155:8453). The domain is not a preimage line in v2-sig because the EIP-712 digest already commits to the full domain separator (name, version, chainId, verifyingContract)."
+  },
+  "tiers": {
+    "delivery": {
+      "preimage_file": "delivery.preimage.bin",
+      "preimage_bytes": 179,
+      "eip712_digest": "0x2a34c5db45d5cb816e1b5efee2fa6a28a013712469291b5a91a35f6f22406629",
+      "signer": "0x77c86a5367d941091a31BC97104609F2Db33C472",
+      "signature": "0xb91e16f00b42677572e24d77742287e99e0c2c926219ea6b4f75023464303cdd49e510a4250fe3563f01c11f651d09f76fb4574abb9ee6bb2a029b9c9b5c41e41c",
+      "signature_note": "EIP-712 PayloadAttestation signature, recoverable to `signer`. Carried alongside, NOT hashed into the commitment.",
+      "commitment": "0x414266f604faf0a5fb2a2be1a149440c6087630ada7b30ecb6ad0f1e29fc1260",
+      "commitment_alg": "sha256-over-preimage-file-bytes"
+    },
+    "provenance": {
+      "preimage_file": "provenance.preimage.bin",
+      "preimage_bytes": 181,
+      "eip712_digest": "0x4e48dc83731e9092e5ad0078293434264ab1488a778d03cd637a933c70eb8c78",
+      "signer": "0x670444bE8515C63c50166EbcD0E5b23c578BbE04",
+      "signature": "0xab6c3218b2b811b05c5849079e6b22d881836dd11c74ba2bd6b604e1df53009f249b917ed4511ab5452b4e02a8e8be248bfeb5ae4d09216465b32a486e5c66a41c",
+      "signature_note": "EIP-712 PayloadAttestation signature, recoverable to `signer`. Carried alongside, NOT hashed into the commitment.",
+      "commitment": "0x275910567a7494806421f4656e534fad44d37c8455a7354e1816246757daaeb6",
+      "commitment_alg": "sha256-over-preimage-file-bytes"
+    }
+  }
+}
