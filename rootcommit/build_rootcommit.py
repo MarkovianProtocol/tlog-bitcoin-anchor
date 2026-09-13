@@ -16,11 +16,11 @@ wallet ECDSA attestation over the same commitment is the offered next increment 
 Run on Neo:  ~/neo_env/bin/python3 build_rootcommit.py
 """
 import base64, datetime, hashlib, json, os, subprocess, sys
-sys.path.insert(0, os.path.expanduser("~/markovian/sunlight_anchor"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from build_sunlight_anchor import anchor_line, KEY_NAME  # reuse v1 signed-note framing
 
 DIR = os.path.dirname(os.path.abspath(__file__))
-OTS = os.environ.get("OTS", os.path.expanduser("~/neo_env/bin/ots"))
+OTS = os.environ.get("OTS", "ots")
 CHECKPOINT = os.path.join(DIR, "mkv_checkpoint.txt")
 IDENTIFIER = b"markovianprotocol.com/bitcoin-anchor/rootcommit/v1"
 PREIMAGE_TAG = "markovianprotocol.com/bitcoin-anchor/rootcommit/v1"

@@ -11,7 +11,7 @@ Generate rootcommit-sig/v1 conformance vectors. Deterministic, reviewable in dif
 Run on Neo (after build_rootcommit_sig.py):  ~/neo_env/bin/python3 make_rootcommit_sig_vectors.py
 """
 import base64, hashlib, json, os, sys
-sys.path.insert(0, os.path.expanduser("~/markovian/sunlight_anchor"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from build_sunlight_anchor import anchor_line
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build_rootcommit import build_preimage, note_lines, checksum, WALLET

@@ -18,8 +18,8 @@ Run on Neo (where ots lives):  ~/neo_env/bin/python3 build_sunlight_anchor.py
 """
 import base64, datetime, hashlib, json, os, random, subprocess
 
-DIR = os.path.expanduser("~/markovian/sunlight_anchor")
-OTS = os.environ.get("OTS", os.path.expanduser("~/neo_env/bin/ots"))
+DIR = os.path.dirname(os.path.abspath(__file__))
+OTS = os.environ.get("OTS", "ots")
 CHECKPOINT = os.path.join(DIR, "tuscolo_checkpoint.txt")   # pinned full checkpoint
 OTS_PROOF  = os.path.join(DIR, "tuscolo_notebody.txt.ots") # OTS proof over the note body
 

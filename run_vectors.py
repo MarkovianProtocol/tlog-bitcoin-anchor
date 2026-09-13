@@ -7,10 +7,10 @@ proven correct by reproducing these results. Exit non-zero if any vector deviate
 Run on Neo:  ~/neo_env/bin/python3 run_vectors.py
 """
 import json, os, sys
-sys.path.insert(0, os.path.expanduser("~/markovian/sunlight_anchor"))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from verify_sunlight_anchor import parse_anchor, ots_check, KEY_NAME, IDENTIFIER
 
-DIR = os.path.expanduser("~/markovian/sunlight_anchor")
+DIR = os.path.dirname(os.path.abspath(__file__))
 VDIR = os.path.join(DIR, "vectors")
 
 

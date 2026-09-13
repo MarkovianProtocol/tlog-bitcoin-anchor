@@ -13,7 +13,7 @@ Cases:
 Run on Neo (after build_rootcommit.py):  ~/neo_env/bin/python3 make_rootcommit_vectors.py
 """
 import hashlib, json, os, sys
-sys.path.insert(0, os.path.expanduser("~/markovian/sunlight_anchor"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from build_sunlight_anchor import anchor_line
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build_rootcommit import build_opaque, build_preimage, IDENTIFIER, note_lines, checksum, WALLET

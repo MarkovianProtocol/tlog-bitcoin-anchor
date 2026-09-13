@@ -14,11 +14,11 @@ Checks:
 Run on Neo:  ~/neo_env/bin/python3 verify_rootcommit.py [file]
 """
 import base64, hashlib, os, re, subprocess, sys, tempfile
-sys.path.insert(0, os.path.expanduser("~/markovian/sunlight_anchor"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from build_sunlight_anchor import KEY_NAME, SIG_TYPE  # noqa
 
 DIR = os.path.dirname(os.path.abspath(__file__))
-OTS = os.environ.get("OTS", os.path.expanduser("~/neo_env/bin/ots"))
+OTS = os.environ.get("OTS", "ots")
 IDENTIFIER = b"markovianprotocol.com/bitcoin-anchor/rootcommit/v1"
 PREIMAGE_TAG = "markovianprotocol.com/bitcoin-anchor/rootcommit/v1"
 FILE = sys.argv[1] if len(sys.argv) > 1 else os.path.join(DIR, "mkv_checkpoint.rootcommit.txt")

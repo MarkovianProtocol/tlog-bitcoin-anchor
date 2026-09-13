@@ -13,10 +13,10 @@ Cases:
 Run on Neo:  ~/neo_env/bin/python3 make_vectors.py
 """
 import base64, hashlib, json, os, random, sys
-sys.path.insert(0, os.path.expanduser("~/markovian/sunlight_anchor"))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build_sunlight_anchor import anchor_line, grease_line, note_body, KEY_NAME, IDENTIFIER
 
-DIR = os.path.expanduser("~/markovian/sunlight_anchor")
+DIR = os.path.dirname(os.path.abspath(__file__))
 VDIR = os.path.join(DIR, "vectors")
 CHECKPOINT = os.path.join(DIR, "tuscolo_checkpoint.txt")
 OTS_PROOF = os.path.join(DIR, "tuscolo_notebody.txt.ots")

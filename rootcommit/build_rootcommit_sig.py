@@ -13,7 +13,7 @@ used, and never printed.
 Run on Neo:  ~/neo_env/bin/python3 build_rootcommit_sig.py
 """
 import base64, datetime, hashlib, json, os, subprocess, sys
-sys.path.insert(0, os.path.expanduser("~/markovian/sunlight_anchor"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from build_sunlight_anchor import anchor_line, KEY_NAME
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build_rootcommit import build_preimage, note_lines, checksum, WALLET
@@ -21,7 +21,7 @@ from eth_account import Account
 from eth_account.messages import encode_defunct
 
 DIR = os.path.dirname(os.path.abspath(__file__))
-OTS = os.environ.get("OTS", os.path.expanduser("~/neo_env/bin/ots"))
+OTS = os.environ.get("OTS", "ots")
 CHECKPOINT = os.path.join(DIR, "mkv_checkpoint.txt")
 OTS_PROOF = os.path.join(DIR, "rootcommit_preimage.bin.ots")          # same commitment as v2
 WALLET_FILE = os.path.expanduser("~/.secrets/agent3_evm_wallet.json")

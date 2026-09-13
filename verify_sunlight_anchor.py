@@ -17,8 +17,8 @@ Run on Neo:  ~/neo_env/bin/python3 verify_sunlight_anchor.py [file]
 """
 import base64, hashlib, os, re, subprocess, sys, tempfile
 
-DIR = os.path.expanduser("~/markovian/sunlight_anchor")
-OTS = os.environ.get("OTS", os.path.expanduser("~/neo_env/bin/ots"))
+DIR = os.path.dirname(os.path.abspath(__file__))
+OTS = os.environ.get("OTS", "ots")
 KEY_NAME = "markovianprotocol.com/bitcoin-anchor"
 SIG_TYPE = 0xff
 IDENTIFIER = b"markovianprotocol.com/bitcoin-anchor/ots/v1"
