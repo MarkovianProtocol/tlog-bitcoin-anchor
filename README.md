@@ -14,7 +14,8 @@ checkpoint: tuscolo2026h2.sunlight.geomys.org  size 207536013
   anchor lines : 1 known, 1 ignored (unknown identifier / grease)
   [1] Structure : PASS  (0xff signed-note line, id=markovianprotocol.com/bitcoin-anchor/ots/v1)
   [2] Binding   : PASS  (proof commits sha256(note body) 7208a041bc85370d…)
-  [3] Temporal  : PASS  (Bitcoin block 957350)   [native scan: Bitcoin attestation present]
+  [3] Temporal  : PASS  (Bitcoin block 957350, Merkle root fcaeee72588400b910a53d0fbbb6d4d8c671045d9f450636a89f9338670cdb3b)
+                  supply -root <hex> from a header you trust to close the last step
   [4] Self-check: PASS  (mutated note body correctly rejected)
 
   WHO : 4 log signature line(s) intact — verify with the log's key / stock CT tooling.
@@ -23,12 +24,18 @@ checkpoint: tuscolo2026h2.sunlight.geomys.org  size 207536013
 
 ## Verify it yourself
 
-Two independent verifiers, one in Go (standard library only) and one in Python. Both do the format
-and binding work natively and use the stock [OpenTimestamps][] client for the Bitcoin step.
+Two independent verifiers, one in Go and one in Python. The Go one runs nothing else: it parses the
+[OpenTimestamps][] proof itself and walks it to the Bitcoin attestation, reporting the block height
+and the Merkle root that block must have. It does not fetch block headers, so the last step is
+yours — pass `-root` with the Merkle root from a header you trust and it compares them. The Python
+one shells out to the stock OpenTimestamps client for the Bitcoin step.
 
 ```
-# Go — no dependencies
+# Go — no dependencies, no `ots` client
 cd goverify && go run . ../tuscolo_checkpoint.anchored.txt
+
+# and with the header you trust
+cd goverify && go run . -root fcaeee72588400b910a53d0fbbb6d4d8c671045d9f450636a89f9338670cdb3b ../tuscolo_checkpoint.anchored.txt
 
 # Python — needs the stock `ots` client
 python3 verify_sunlight_anchor.py tuscolo_checkpoint.anchored.txt
@@ -72,7 +79,8 @@ reason.
 tuscolo_checkpoint.txt           the pinned, real checkpoint
 tuscolo_checkpoint.anchored.txt  the checkpoint + our anchor line + a grease line
 tlog-bitcoin-anchor.md           the format specification
-goverify/                        Go reference verifier (stdlib only)
+goverify/                        Go reference verifier (stdlib only, in-process OTS)
+goverify/ots/                    OpenTimestamps proof parser and walker, no dependencies
 verify_sunlight_anchor.py        Python reference verifier
 build_sunlight_anchor.py         produces the anchored checkpoint
 vectors/                         conformance corpus + manifest.json
